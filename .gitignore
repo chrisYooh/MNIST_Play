@@ -1,0 +1,7 @@
+__pycache__
+1_MNIST
+2_Dataset/someTrainImages
+2_Dataset/someTestImages
+5_Training/Milestone
+6_ModelTrans/model.onnx
+
