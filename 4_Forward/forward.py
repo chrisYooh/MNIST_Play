@@ -3,10 +3,8 @@
 import sys
 import torch
 import numpy as np
-import math
 
 from importlib import import_module
-from torch.autograd import Variable
 from PIL import Image
 
 def load_model():
@@ -15,18 +13,17 @@ def load_model():
     model = module.Net()
     weight_info = torch.load("./model_weight.pth", map_location="cpu")
     model.load_state_dict(weight_info)
-    model.train(False)
+    model.eval()
     return model
 
-def load_input():
-    img_pil = Image.open("./test_images/8.jpeg")
+def load_input(image_path):
+    img_pil = Image.open(image_path)
     img_np = np.array(img_pil)
     img_tensor = torch.from_numpy(img_np)
     img_tensor_float = img_tensor.float()
     img_tensor_float = img_tensor_float.unsqueeze(0)
     img_tensor_float = img_tensor_float.unsqueeze(0)
-    img_variable = Variable(img_tensor_float)
-    return img_variable
+    return img_tensor_float
 
 def analysis_result(result):
     result_tensor = torch.nn.functional.softmax(result, 1);
@@ -38,7 +35,7 @@ def analysis_result(result):
 model = load_model();
 
 # 2 加载输入（一张手写数字图片）
-input = load_input();
+input = load_input("./test_images/1.jpeg")
 
 # 3 执行算法（推理）
 result = model.forward(input);
